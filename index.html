@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="author" content="Юрий Фаркаш">
+<title>Выбери правильное слово</title>
+	<style>
+.common{
+width:60%;
+height:700px;
+}
+ .word{
+width:220px;
+height:80px;
+background:yellow;
+border:black 4px solid;
+font-size:400%;
+float:left;
+margin:5px 5px 5px 5px;
+text-align: center;
+position:relative;
+border-radius:5%;
+cursor:pointer;
+}
+.wtrfall{
+overflow:hidden;
+width:100%;
+height:60%;
+background:orange;
+}
+.pics{
+width:100%;
+height:40%;
+background:blue;
+overflow:hidden;
+}
+#quest{
+position:relative;
+left:-200px;
+width:170px;
+height:170px;
+background:url(quests.png);
+
+}
+.movepic{
+transform:translateX(500px);
+-webkit-transition: transform 1.5s ease-out 0.5s;
+-moz-transition: transform 1.5s ease-out 0.5s;
+     -o-transition: transform 1.5s ease-out 0.5s;
+     transition: transform 1.5s ease-out 0.5s;
+}
+.counter{
+position:relative;
+z-index:10;
+width:50px;
+height:30px;
+border:3px solid black;
+font-size:200%;
+}
+	</style>
+</head>
+	<body>
+<h1>Выбери правильное слово  по картинке</h1>
+<p>Очередное произведение от Ю.Ю.Фаркаш. Чистый JS, фреймворки не страдают.<p>
+<div class="common">
+
+	<div class="wtrfall">
+ <div class="counter">
+000
+</div>
+
+</div>
+	<div class="pics">
+		<div id="quest" >
+</div>
+</div>
+</div>
+<a href="mailto:happycat@meta.ua">Хеппикет@мета.юа</a></p> 
+<p>Картиночки от:
+<a href="http://www.freepik.com">Designed by Freepik</a>
+</p>
+	</body>
+<script>
+var rr=0; //случайное число для выбора картинки
+var ii=0;	//ii это выбор слова в массиве
+var plus=000;	//значение каунтера
+var lol=[5,-5,35];	//значение первого и разного  смещения по высоте у кирпичей
+var mass=['WOLF','FISH','OWL','LION','CAT','FLY','HARE','PANDA','SHEEP','SHARK','FROG','PIG','DOG'];
+var bckgrpos=['0px','-170px','-340px','-510px','-680px','-850px','-1020px','-1190px','-1360px','-1530px','-1700px','-1870px','-2040px'];
+
+var wtrfall=document.body.getElementsByClassName("wtrfall")[0];
+var quest=document.getElementById('quest');
+
+document.body.getElementsByClassName('counter')[0].innerHTML=plus;
+	for (i=0;i<3;i++)	//цикл создания и вставки слов
+{	
+toto=document.createElement('div');
+toto.onclick=klaz;
+toto.className="word";
+toto.innerHTML=mass[ii];
+toto.style.top=lol[i]+'px';	//смещение эл-тов
+wtrfall.appendChild(toto);
+ii=ii+1;
+
+	};
+rr=Math.floor(Math.random() * 3+1);
+console.log('rr '+rr);		//случайное число от 0до2 для выбора картинки из текущего ii
+console.log('ii '+ii);
+rr=ii-rr;
+console.log('ii-rr '+rr);
+quest.setAttribute('nm',mass[rr]);	//аттрибут от существующих слов для картинки
+console.log('quest.setAttribute '+quest.getAttribute('nm'))
+quest.style.backgroundPosition=bckgrpos[rr];	//бакгрнд поситион от существующих слов для картинки
+
+				setInterval(function(){
+ololo=document.body.getElementsByClassName('word');
+
+
+quest.className="movepic";
+
+	//	if(levo>600)	//выход за пределы поля картинки
+//{	levo=0; }
+
+//quest.style.transform="translateX"+"("+levo+"px)";
+//levo=levo+40;
+	for(p=0;p<3;p++)	//цикл смещения всех кирпичей
+			{		
+lol[p]=lol[p]+20;
+ololo[p].style.top=lol[p]+"px";	//ключевая хрень, смещение дива по вертикали
+
+				if(lol[p]>400)	//выход кирпича за пределы
+	{
+lol[p]=-50;	//начало кирпичей за пределами дива
+ii=ii+1;	//следующ слово в массиве
+ololo[p].style.color='';	//обнулятор угаданного кирпича
+		if(ii<mass.length)	//зацикливание массива
+{	
+ololo[p].innerHTML=mass[ii];	}
+	else	{ii=0 };
+rr=Math.floor(Math.random() * 3);
+rr=ii-rr;
+quest.setAttribute('nm',mass[rr]);	//аттрибут от существующих слов для картинки
+console.log('quest.setAttribute '+quest.getAttribute('nm'))
+quest.style.backgroundPosition=bckgrpos[rr];	//бакгрнд поситион от существующих слов для картинки
+quest.className="";
+}
+
+
+	}
+},500);
+
+//обработчики
+
+function klaz(){
+		if(quest.getAttribute('nm')==this.innerHTML)	//сравнение нажатого кирпича и атрибута картинки
+{
+if(this.style.color!="red")	//антистораз нажималка
+{
+this.style.color="red";	// когда угадалка
+plus=plus+1;
+document.body.getElementsByClassName('counter')[0].innerHTML=plus;
+}
+}
+else{ return }
+
+}
+//	выбор картинки совпад с тремя словами - math.random от 3. минус от текущего последнего значения mass[ii]
+
+
+</script>
+
+
+
+
+
+
+
+</html>
